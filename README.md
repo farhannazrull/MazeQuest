@@ -5,7 +5,7 @@
 > **Stack:** Java 21 + Swing (no external dependencies)
 
 MazeQuest is an interactive maze-solving visualizer that demonstrates two
-fundamental graph traversal algorithms from the course — **Breadth-First
+fundamental graph traversal algorithms from the course, **Breadth-First
 Search (BFS)** and **Depth-First Search (DFS)**. Generate a fresh perfect
 maze, watch each algorithm explore it cell-by-cell, and compare them
 side-by-side on the same grid.
