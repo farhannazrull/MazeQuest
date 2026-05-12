@@ -36,9 +36,33 @@ A third algorithm is hiding in the maze *generator* itself — the
 recursive backtracker is randomized DFS over cells, removing walls as it
 goes.
 
+## 🖥️ Features
+
+-  Dark-themed animated GUI (Java Swing)
+-  Adjustable maze sizes: 11×11, 15×15, 21×21, 31×31, 41×41
+-  Step-by-step animation with progress bar
+-  Stats display: cells visited & path length
+-  Color-coded visualization:
+  -  Green = Start
+  -  Red = End
+  -  Blue = Visited cells
+  -  Yellow = Solution path
+  -  Orange = Current cell
+
+---
+
 ## Project structure
 
 ```
+MazeQuest/
+├── src/
+│   ├── Main.java
+│   ├── Maze.java          → Generator maze
+│   ├── BFS.java           → Algoritma BFS
+│   ├── DFS.java           → Algoritma DFS
+│   └── MazePanel.java     → Animation, GUI 
+├── README.md
+└── .gitignore
 
 ```
 
@@ -57,6 +81,6 @@ Requires **JDK 17 or newer** (we tested on JDK 21).
 
 | Member | Student ID | Contribution |
 |---|---|---|
-| Mohammad Farhan Nazrul Ilhami | 5025231053 | 33.33% — Project setup, GitHub repo, ... |
-| Rafael Jonathan | 5025 | 33.33% — ... |
-| Ulil Amry Ghovary | 5025 | 33.33% — ... |
+| Mohammad Farhan Nazrul Ilhami | 5025231053 | 33.33% — Project setup, GitHub repo, BFS Algorithm |
+| Rafael Jonathan | 5025231252 | 33.33% — Project Structure , DFS Algorithm, Maze Generator |
+| Ulil Amry Ghovary | 5025 | 33.33% — UI Animation, Report  |
