@@ -15,6 +15,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -32,7 +33,19 @@ public class MazeFrame extends JFrame {
     private JLabel statsLabel;
     private JLabel sizeLabel;
     private JComboBox<String> sizeSelector;
+    /** Internal 1 (lambat) … 100 (cepat); UI hanya Slow–Fast. */
+    private JSlider speedSlider;
+    private JLabel slowSpeedLabel;
+    private JLabel fastSpeedLabel;
     private JPanel controlsPanel;
+
+    private static final int SPEED_MIN = 1;
+    private static final int SPEED_MAX = 100;
+    private static final int SPEED_DEFAULT = 50;
+    /** Delay minimum (ms) saat slider = cepat. */
+    private static final int ANIM_DELAY_MIN_MS = 2;
+    /** Delay maksimum (ms) saat slider = lambat. */
+    private static final int ANIM_DELAY_MAX_MS = 120;
     private StyledButton generateBtn;
     private StyledButton bfsBtn;
     private StyledButton dfsBtn;
@@ -108,7 +121,7 @@ public class MazeFrame extends JFrame {
         wrapper.setOpaque(false);
         wrapper.setBorder(BorderFactory.createEmptyBorder(0, 16, 16, 16));
 
-        controlsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 12, 10));
+        controlsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 8));
         controlsPanel.setBackground(new Color(16, 21, 40));
         controlsPanel.setBorder(BorderFactory.createLineBorder(new Color(78, 93, 140), 1, true));
 
@@ -119,9 +132,9 @@ public class MazeFrame extends JFrame {
         sizeSelector.setForeground(new Color(19, 28, 54));
         sizeSelector.setBackground(new Color(236, 242, 255));
 
-        generateBtn = createStyledButton("Generate");
-        bfsBtn = createStyledButton("Run BFS");
-        dfsBtn = createStyledButton("Run DFS");
+        generateBtn = createStyledButton("Generate", false);
+        bfsBtn = createStyledButton("BFS", true);
+        dfsBtn = createStyledButton("DFS", true);
 
         generateBtn.addActionListener(e -> generateMaze());
         bfsBtn.addActionListener(e -> runBfs());
@@ -135,6 +148,27 @@ public class MazeFrame extends JFrame {
         controlsPanel.add(generateBtn);
         controlsPanel.add(bfsBtn);
         controlsPanel.add(dfsBtn);
+
+        JPanel speedStrip = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
+        speedStrip.setOpaque(false);
+        slowSpeedLabel = new JLabel("Slow");
+        slowSpeedLabel.setForeground(new Color(195, 210, 245));
+        fastSpeedLabel = new JLabel("Fast");
+        fastSpeedLabel.setForeground(new Color(195, 210, 245));
+
+        speedSlider = new JSlider(SwingConstants.HORIZONTAL, SPEED_MIN, SPEED_MAX, SPEED_DEFAULT);
+        speedSlider.setOpaque(false);
+        speedSlider.setPaintTicks(false);
+        speedSlider.setPaintLabels(false);
+        speedSlider.setFocusable(false);
+
+        speedSlider.addChangeListener(e ->
+                mazePanel.setAnimationSpeed(delayMsFromSpeedScale(speedSlider.getValue())));
+
+        speedStrip.add(slowSpeedLabel);
+        speedStrip.add(speedSlider);
+        speedStrip.add(fastSpeedLabel);
+        controlsPanel.add(speedStrip);
 
         JPanel info = new JPanel(new BorderLayout());
         info.setBackground(new Color(16, 21, 40));
@@ -155,19 +189,28 @@ public class MazeFrame extends JFrame {
         }
         int w = getWidth();
         int controlFontSize = clamp(w / 65, 14, 19);
-        int buttonWidth = clamp(w / 8, 110, 190);
-        int buttonHeight = clamp(w / 26, 36, 50);
-        int selectorWidth = clamp(w / 10, 92, 130);
-        int hGap = clamp(w / 85, 8, 16);
+        int smallBtnW = clamp(w / 14, 64, 96);
+        int smallBtnH = clamp(w / 32, 26, 36);
+        int genBtnW = clamp(w / 11, 78, 115);
+        int selectorWidth = clamp(w / 10, 88, 126);
+        int rowHeight = Math.max(smallBtnH, 30);
+        int hGap = clamp(w / 90, 6, 14);
+        int sliderW = clamp(w / 7, 100, 200);
 
         Font controlFont = new Font("Segoe UI", Font.BOLD, controlFontSize);
+        Font speedHintFont = new Font("Segoe UI", Font.PLAIN, Math.max(11, controlFontSize - 3));
         sizeLabel.setFont(controlFont);
+        slowSpeedLabel.setFont(speedHintFont);
+        fastSpeedLabel.setFont(speedHintFont);
         sizeSelector.setFont(controlFont);
-        sizeSelector.setPreferredSize(new Dimension(selectorWidth, buttonHeight));
+        sizeSelector.setPreferredSize(new Dimension(selectorWidth, rowHeight));
 
-        generateBtn.applyResponsiveSizing(controlFont, buttonWidth, buttonHeight);
-        bfsBtn.applyResponsiveSizing(controlFont, buttonWidth, buttonHeight);
-        dfsBtn.applyResponsiveSizing(controlFont, buttonWidth, buttonHeight);
+        speedSlider.setPreferredSize(new Dimension(sliderW, 22));
+
+        Font smallBtnFont = new Font("Segoe UI", Font.BOLD, Math.max(11, controlFontSize - 2));
+        generateBtn.applyResponsiveSizing(controlFont, genBtnW, rowHeight);
+        bfsBtn.applyResponsiveSizing(smallBtnFont, smallBtnW, smallBtnH);
+        dfsBtn.applyResponsiveSizing(smallBtnFont, smallBtnW, smallBtnH);
 
         FlowLayout layout = (FlowLayout) controlsPanel.getLayout();
         layout.setHgap(hGap);
@@ -179,8 +222,8 @@ public class MazeFrame extends JFrame {
         return Math.max(min, Math.min(value, max));
     }
 
-    private StyledButton createStyledButton(String text) {
-        return new StyledButton(text);
+    private StyledButton createStyledButton(String text, boolean compact) {
+        return new StyledButton(text, compact);
     }
 
     private void generateMaze() {
@@ -206,6 +249,7 @@ public class MazeFrame extends JFrame {
                 bfs.getFinalPath(),
                 "BFS animation",
                 new Color(91, 140, 255),
+                delayMsFromSpeedScale(speedSlider.getValue()),
                 () -> setAlgorithmRunning(false)
         );
         statsLabel.setText(bfs.getStats());
@@ -223,6 +267,7 @@ public class MazeFrame extends JFrame {
                 dfs.getFinalPath(),
                 "DFS animation",
                 new Color(122, 92, 255),
+                delayMsFromSpeedScale(speedSlider.getValue()),
                 () -> setAlgorithmRunning(false)
         );
         statsLabel.setText(dfs.getStats());
@@ -239,12 +284,22 @@ public class MazeFrame extends JFrame {
         }
     }
 
+    /** Internal: 1 = lambat, 100 = cepat (dipetakan ke delay ms). */
+    private int delayMsFromSpeedScale(int scale) {
+        int v = clamp(scale, SPEED_MIN, SPEED_MAX);
+        if (SPEED_MAX <= SPEED_MIN) {
+            return ANIM_DELAY_MIN_MS;
+        }
+        int span = ANIM_DELAY_MAX_MS - ANIM_DELAY_MIN_MS;
+        return ANIM_DELAY_MIN_MS + span * (SPEED_MAX - v) / (SPEED_MAX - SPEED_MIN);
+    }
+
     private class StyledButton extends JButton {
-        StyledButton(String text) {
+        StyledButton(String text, boolean compact) {
             super(text);
             setFocusPainted(false);
             setFont(UI_FONT_BOLD);
-            setMargin(new Insets(8, 14, 8, 14));
+            setMargin(compact ? new Insets(4, 8, 4, 8) : new Insets(6, 10, 6, 10));
             setBorder(BorderFactory.createLineBorder(new Color(43, 96, 191), 2));
             setOpaque(true);
             setForeground(BTN_TEXT);

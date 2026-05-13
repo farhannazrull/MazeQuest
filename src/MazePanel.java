@@ -18,6 +18,10 @@ public class MazePanel extends JPanel {
     private int visitedStep = 0;
     private int pathStep = 0;
     private Timer animationTimer;
+    /** Langkah visited per tick; bisa diubah saat animasi lewat {@link #setAnimationSpeed(int)}. */
+    private int animVisitedStride = 2;
+    /** Langkah path per tick. */
+    private int animPathStride = 1;
     private String overlayText = "Press Generate, then BFS or DFS";
     private Color glowColor = new Color(122, 92, 255);
 
@@ -39,7 +43,11 @@ public class MazePanel extends JPanel {
         repaint();
     }
 
-    public void animateSolution(List<int[]> visited, List<int[]> path, String label, Color tone, Runnable onComplete) {
+    /**
+     * @param delayMs delay antar frame animasi (semakin kecil = semakin cepat). Minimal 1 ms.
+     */
+    public void animateSolution(List<int[]> visited, List<int[]> path, String label, Color tone,
+                                int delayMs, Runnable onComplete) {
         stopAnimation();
         this.visitedOrder = (visited == null) ? new ArrayList<>() : visited;
         this.finalPath = (path == null) ? new ArrayList<>() : path;
@@ -48,11 +56,14 @@ public class MazePanel extends JPanel {
         this.glowColor = tone;
         this.overlayText = label;
 
-        animationTimer = new Timer(17, e -> {
+        applySpeedToStrides(delayMs);
+
+        int delay = Math.max(1, delayMs);
+        animationTimer = new Timer(delay, e -> {
             if (visitedStep < visitedOrder.size()) {
-                visitedStep += 2;
+                visitedStep += animVisitedStride;
             } else if (pathStep < finalPath.size()) {
-                pathStep += 1;
+                pathStep += animPathStride;
             } else {
                 ((Timer) e.getSource()).stop();
                 if (onComplete != null) {
@@ -62,6 +73,44 @@ public class MazePanel extends JPanel {
             repaint();
         });
         animationTimer.start();
+    }
+
+    /**
+     * Ubah kecepatan animasi saat berjalan atau sebelum mulai (nilai delay akan dipakai run berikutnya
+     * jika timer belum ada).
+     */
+    public void setAnimationSpeed(int delayMs) {
+        applySpeedToStrides(delayMs);
+        int delay = Math.max(1, delayMs);
+        if (animationTimer != null && animationTimer.isRunning()) {
+            animationTimer.setDelay(delay);
+        }
+    }
+
+    private void applySpeedToStrides(int delayMs) {
+        int delay = Math.max(1, delayMs);
+        if (delay >= 55) {
+            animVisitedStride = 8;
+        } else if (delay >= 30) {
+            animVisitedStride = 5;
+        } else if (delay >= 14) {
+            animVisitedStride = 3;
+        } else if (delay >= 8) {
+            animVisitedStride = 2;
+        } else {
+            animVisitedStride = 6;
+        }
+        if (delay >= 55) {
+            animPathStride = 4;
+        } else if (delay >= 30) {
+            animPathStride = 3;
+        } else if (delay >= 14) {
+            animPathStride = 2;
+        } else if (delay >= 8) {
+            animPathStride = 1;
+        } else {
+            animPathStride = 3;
+        }
     }
 
     public void stopAnimation() {
