@@ -22,7 +22,6 @@ public class BFS {
         int cols = maze.getCols();
 
         boolean[][] visited = new boolean[rows][cols];
-        // Array parent untuk ngelacak jalur terpendek buat finalPath
         int[][][] parent = new int[rows][cols][2];
         for (int[][] row : parent) {
             for (int[] p : row) {
