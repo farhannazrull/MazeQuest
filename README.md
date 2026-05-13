@@ -83,4 +83,4 @@ Requires **JDK 17 or newer** (we tested on JDK 21).
 |---|---|---|
 | Mohammad Farhan Nazrul Ilhami | 5025231053 | 33.33% — Project setup, GitHub repo, BFS Algorithm |
 | Rafael Jonathan | 5025231252 | 33.33% — Project Structure , DFS Algorithm, Maze Generator |
-| Ulil Amry Ghovary | 5025 | 33.33% — UI Animation, Report  |
+| Ulil Amry Ghovary | 5025231125 | 33.33% — UI Animation, Report  |
