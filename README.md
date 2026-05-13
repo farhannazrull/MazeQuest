@@ -39,7 +39,8 @@ goes.
 ## 🖥️ Features
 
 -  Dark-themed animated GUI (Java Swing)
--  Adjustable maze sizes: 11×11, 15×15, 21×21, 31×31, 41×41
+-  Adjustable maze sizes: 11×11, 15×15, 21×21, 31×31, 41×41, 75×75, 90×90
+-  Adjustable tracking speed
 -  Step-by-step animation with progress bar
 -  Stats display: cells visited & path length
 -  Color-coded visualization:
