@@ -10,7 +10,7 @@ Search (BFS)** and **Depth-First Search (DFS)**. Generate a fresh perfect
 maze, watch each algorithm explore it cell-by-cell, and compare them
 side-by-side on the same grid.
 
-[gambar: BFS solving a 25x25 maze]
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/7fcf718f-5a91-4f3b-be28-95ffdbd56b6c" />
 
 ## Why this project?
 
