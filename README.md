@@ -55,13 +55,13 @@ goes.
 ```
 MazeQuest/
 ├── src/
-│   ├── Main.java
-│   ├── Maze.java          → Generator maze
-│   ├── BFS.java           → Algoritma BFS
-│   ├── DFS.java           → Algoritma DFS
-│   └── MazePanel.java     → Animation, GUI 
-├── README.md
-└── .gitignore
+│   ├── Main.java       — Entry point
+│   ├── Maze.java       — Maze data & generator
+│   ├── BFS.java        — BFS solver
+│   ├── DFS.java        — DFS solver
+│   ├── MazePanel.java  — Rendering & animation
+│   └── MazeFrame.java  — Main window & controls
+└── README.md
 
 ```
 
@@ -85,6 +85,6 @@ java -cp out Main
 
 | Member | Student ID | Contribution |
 |---|---|---|
-| Mohammad Farhan Nazrul Ilhami | 5025231053 | 33.33% — Project setup, GitHub repo, BFS Algorithm, Report (Design, BFS Implementation, and Evaluation) |
+| Mohammad Farhan Nazrul Ilhami | 5025231053 | 33.33% — 33.33% — Project Setup, GitHub Repository, BFS Algorithm, Report (Design, BFS Implementation, and Evaluation), Testing. |
 | Rafael Jonathan | 5025231252 | 33.33% — Project Structure , DFS Algorithm, Maze Generator |
 | Ulil Amry Ghovary | 5025231125 | 33.33% — UI Animation, Report  |
