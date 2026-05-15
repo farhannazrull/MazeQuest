@@ -72,7 +72,12 @@ MazeQuest/
 Requires **JDK 17 or newer** (we tested on JDK 21).
 
 ```bash
+# Compile all source files
+javac -d out src/*.java
 
+
+# Run the application
+java -cp out Main
 ```
 
 ## Using the app
@@ -82,6 +87,6 @@ Requires **JDK 17 or newer** (we tested on JDK 21).
 
 | Member | Student ID | Contribution |
 |---|---|---|
-| Mohammad Farhan Nazrul Ilhami | 5025231053 | 33.33% — Project setup, GitHub repo, BFS Algorithm |
+| Mohammad Farhan Nazrul Ilhami | 5025231053 | 33.33% — Project setup, GitHub repo, BFS Algorithm, Report (Design, BFS Implementation, and Evaluation) |
 | Rafael Jonathan | 5025231252 | 33.33% — Project Structure , DFS Algorithm, Maze Generator |
 | Ulil Amry Ghovary | 5025231125 | 33.33% — UI Animation, Report  |
