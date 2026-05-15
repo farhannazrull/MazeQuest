@@ -36,7 +36,7 @@ A third algorithm is hiding in the maze *generator* itself — the
 recursive backtracker is randomized DFS over cells, removing walls as it
 goes.
 
-## 🖥️ Features
+## Features
 
 -  Dark-themed animated GUI (Java Swing)
 -  Adjustable maze sizes: 11×11, 15×15, 21×21, 31×31, 41×41, 75×75, 90×90
@@ -49,8 +49,6 @@ goes.
   -  Blue = Visited cells
   -  Yellow = Solution path
   -  Orange = Current cell
-
----
 
 ## Project structure
 
